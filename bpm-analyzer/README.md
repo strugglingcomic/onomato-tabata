@@ -19,7 +19,7 @@ bpm-analyzer --help
 
 ## Current Status
 
-✅ **Working**: Librosa algorithm, all output formats (JAMS/CSV/JSON), database operations, batch processing  
+✅ **Working**: Librosa algorithm, all output formats (JAMS/CSV/JSON), database operations, batch processing, comprehensive test suite  
 ❌ **Not Working**: Madmom algorithm (Python 3.12 incompatibility)  
 ⚠️ **Not Tested**: Essentia, Aubio, Ensemble algorithms
 
@@ -40,6 +40,21 @@ pip install -e .
 ```bash
 pip install -e ".[dev]"
 pre-commit install  # Optional: setup code quality hooks
+```
+
+### Testing
+```bash
+# Run all tests
+pytest
+
+# Run with coverage
+pytest --cov=bpm_analyzer
+
+# Run specific test file
+pytest tests/test_core_analyzer.py
+
+# Run with verbose output
+pytest -v
 ```
 
 ## Usage
@@ -84,13 +99,54 @@ The tool outputs beat and tempo information in JAMS format by default:
 - **Tempo**: BPM value(s) throughout the song
 - **Confidence**: Algorithm confidence (currently fixed at 0.8 for librosa)
 
+## Testing
+
+This project includes a comprehensive test suite covering:
+
+- **Unit Tests**: Individual components and functions
+- **Integration Tests**: End-to-end workflows and component interactions
+- **CLI Tests**: Command-line interface functionality
+- **Database Tests**: Data persistence and querying
+- **Algorithm Tests**: Beat detection implementations
+- **Batch Processing Tests**: Multi-file processing scenarios
+
+### Test Categories
+
+- `test_core_analyzer.py` - Core analysis functionality
+- `test_cli.py` - Command-line interface
+- `test_database.py` - Database operations and models
+- `test_algorithms.py` - Beat detection algorithms
+- `test_utils.py` - Utility functions and validation
+- `test_batch_processing.py` - Batch processing workflows
+- `test_tempo_map.py` - Data structures and tempo mapping
+- `test_config.py` - Configuration management
+- `test_integration.py` - End-to-end integration scenarios
+
+### Running Tests
+
+```bash
+# Run all tests
+pytest
+
+# Run with coverage report
+pytest --cov=bmp_analyzer --cov-report=html
+
+# Run specific test categories
+pytest tests/test_core_analyzer.py -v
+pytest tests/test_cli.py -k "test_analyze"
+
+# Run integration tests only
+pytest tests/test_integration.py
+```
+
 ## Contributing
 
 1. Fork the repository
 2. Create a feature branch (`git checkout -b feature/amazing-feature`)
 3. Make your changes
-4. Run tests: `pytest` (if available)
-5. Submit a pull request
+4. Run tests: `pytest` and ensure all tests pass
+5. Add tests for new functionality
+6. Submit a pull request
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed guidelines.
 
@@ -102,8 +158,14 @@ bpm-analyzer/
 │   ├── algorithms/     # Beat detection algorithms
 │   ├── core/          # Core analysis logic
 │   ├── db/            # Database models
+│   ├── processors/    # Batch processing
+│   ├── utils/         # Utility functions
 │   └── cli.py         # CLI interface
-├── tests/             # Test suite
+├── tests/             # Comprehensive test suite
+│   ├── conftest.py    # Test fixtures and configuration
+│   ├── test_*.py      # Test modules for each component
+│   └── test_integration.py # End-to-end integration tests
+├── docs/              # Documentation
 └── test_audio.mp3     # Sample audio for testing
 ```
 
